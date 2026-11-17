@@ -90,6 +90,13 @@ if st.button("Generate newsletter", type="primary", use_container_width=True):
 
         sections = generate_sections(prefs, client, on_progress)
         bar.empty()
+        if getattr(client, "fetch_errors", None):
+            with st.expander("Technical details — some news searches failed", expanded=True):
+                for error in client.fetch_errors:
+                    st.warning(error)
+        total_items = sum(len(items) for section in sections for items in section.by_group.values())
+        if total_items == 0 and not getattr(client, "fetch_errors", None):
+            st.warning("Gemini completed the searches but returned no verifiable articles from the selected source domains. Try Past week, select fewer sources, or use broader topics.")
         st.session_state["result"] = {
             "sections": sections,
             "md": newsletter.render_markdown(sections, prefs),
