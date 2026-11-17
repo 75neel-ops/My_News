@@ -79,7 +79,7 @@ Rules:
                 self.last_error = f"{type(exc).__name__}: {exc}"
                 if attempt < config.MAX_RETRIES - 1:
                     time.sleep(2 ** attempt)
-        return None
+        raise RuntimeError(f"Gemini request failed after {config.MAX_RETRIES} attempts: {self.last_error}")
 
     def _parse(self, response, group_sources, limit) -> list:
         if response is None or not getattr(response, "candidates", None):
