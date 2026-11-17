@@ -19,13 +19,13 @@ from models import Item
 # Accept the requested bold-headline format, while tolerating common variations
 # returned by the model (numbered lists, bullets, and em/en dashes).
 LINE_RE = re.compile(
-    r"^\\s*(?:[-*•]\\s+|\\d+[.)]\\s+)?"
-    r"\\*\\*(?P<title>.+?)\\*\\*\\s*"
-    r"(?:[—–:：-]\\s*)?(?P<summary>.+?)\\s*$"
+    r"^\s*(?:[-*•]\s+|\d+[.)]\s+)?"
+    r"\*\*(?P<title>.+?)\*\*\s*"
+    r"(?:[—–:：-]\s*)?(?P<summary>.+?)\s*$"
 )
 PLAIN_LINE_RE = re.compile(
-    r"^\\s*(?:[-*•]\\s+|\\d+[.)]\\s+)?"
-    r"(?P<title>[^—–:：]{5,120})\\s+[—–:：]\\s+(?P<summary>.+?)\\s*$"
+    r"^\s*(?:[-*•]\s+|\d+[.)]\s+)?"
+    r"(?P<title>[^—–:：]{5,120})\s+[—–:：]\s+(?P<summary>.+?)\s*$"
 )
 
 
@@ -44,7 +44,7 @@ class GeminiNewsClient:
     def _build_prompt(self, topic, group_sources, prefs) -> str:
         is_social = group_sources[0].group == src.SOCIAL
         kind = "posts, videos or discussions" if is_social else "news articles"
-        site_list = "\\n".join(
+        site_list = "\n".join(
             f"- {s.name}: {', '.join(s.domains)}" for s in group_sources
         )
         return f"""You are a careful news curator. Today's date is {date.today():%d %B %Y}.
@@ -146,7 +146,7 @@ Rules:
                     candidates.append(web_ref)
 
         headline_words = {
-            word.lower() for word in re.findall(r"[\\w]{4,}", headline)
+            word.lower() for word in re.findall(r"[\w]{4,}", headline)
         }
         ranked = []
         for web_ref in candidates:
