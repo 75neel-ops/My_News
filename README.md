@@ -4,7 +4,7 @@
     export GEMINI_API_KEY="your-paid-key"
     python main.py
 
-Optional: `GEMINI_MODEL` (default gemini-2.5-flash), `NEWSLETTER_OUT` (default ./output).
+Optional: `GEMINI_MODEL` (default gemini-3.8-flash), `NEWSLETTER_OUT` (default ./output).
 
 | File | Role |
 |---|---|
